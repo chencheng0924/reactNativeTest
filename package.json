@@ -1,18 +1,31 @@
 {
-  "name": "reactitem",
+  "name": "reactnativetextitem",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "patch-package"
   },
   "dependencies": {
-    "expo": "~49.0.11",
+    "@react-navigation/material-top-tabs": "^6.6.4",
+    "deprecated-react-native-prop-types": "^4.2.1",
+    "expo": "~49.0.13",
     "expo-status-bar": "~1.6.0",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
-    "react-native": "0.72.4"
+    "react-native": "0.72.5",
+    "react-native-gesture-handler": "~2.12.0",
+    "react-native-gifted-charts": "^1.3.9",
+    "react-native-linear-gradient": "^2.8.3",
+    "react-native-pager-view": "6.2.0",
+    "react-native-reanimated": "~3.3.0",
+    "react-native-snap-carousel": "^3.9.1",
+    "react-native-svg": "^13.14.0",
+    "react-native-tab-view": "^3.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

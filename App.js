@@ -1,116 +1,56 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  FlatList,
-  Button,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { useState } from "react";
-import ShowList from "./components/showList";
-import InputText from "./components/inputText";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, FlatList } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import Distance from "./screen/Distance";
+import Record from "./screen/Record";
+import CarouselList from "./screen/CarouselList";
+import 'react-native-gesture-handler'
+
+const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
-  const [showItem, setShowItem] = useState([]);
-  const [modalShow, setModalShow] = useState(false);
-
-  const modalHandler = () => {
-    setModalShow(true);
-  };
-  const closeModal = () => {
-    setModalShow(false);
-  };
-  const addTextShow = (entryText) => {
-    setShowItem((nowShowItem) => [
-      ...nowShowItem,
-      { text: entryText, id: Math.random().toString() },
-    ]);
-    closeModal();
-  };
-  const deleteItem = (id) => {
-    setShowItem((nowShowItem) => {
-      return nowShowItem.filter((item) => item.id !== id);
-    });
-  };
   return (
     <>
-      <StatusBar style="auto" />
-      <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={require("./assets/img/calendar.png")}
-        />
-        <TouchableOpacity style={styles.addNew} onPress={modalHandler}>
-          <Text style={styles.addNewButton}>新增行事曆</Text>
-        </TouchableOpacity>
-        <InputText
-          visible={modalShow}
-          closeModal={closeModal}
-          addTextShow={addTextShow}
-        />
-        <View style={styles.showContainer}>
-          {/* <ScrollView alwaysBounceVertical={false}>
-          {showItem.map((item, index) => (
-            <View style={styles.showItem} key={index}>
-              <Text style={styles.showItemText}>{item}</Text>
-            </View>
-          ))}
-        </ScrollView> */}
-          <FlatList
-            data={showItem}
-            renderItem={(itemData) => {
-              return (
-                <ShowList
-                  deleteItem={deleteItem}
-                  text={itemData.item.text}
-                  id={itemData.item.id}
-                />
-              );
+      <StatusBar style="dark" />
+      <SafeAreaView />
+      <ScrollView contentContainerStyle={{flexGrow:1, height: 1380, paddingTop: 30, backgroundColor: '#E7E7E7'}}>
+        <NavigationContainer>
+        <CarouselList/>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarLabelStyle: {
+                fontSize: 14,
+                fontWeight: '600',
+              },
+              tabBarIndicatorContainerStyle: {
+                width: "100%",
+                left: "0",
+                backgroundColor: "#E7E7E7",
+              },
+              tabBarIndicatorStyle: {
+                backgroundColor: "#1FC97B",
+              },
+              tabBarActiveTintColor: "#1FC97B",
+              tabBarInactiveTintColor: "#919191",
+              tabBarStyle: {
+                backgroundColor: "#E7E7E7",
+              },
             }}
-            keyExtractor={(item) => item.id}
-            alwaysBounceVertical={false}
-          />
-        </View>
-      </View>
+          >
+            <Tab.Screen
+              options={{
+                tabBarActiveTintColor: "#1FC97B",
+              }}
+              name="減碳里程"
+              component={Distance}
+            />
+            <Tab.Screen name="交易紀錄" component={Record} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </ScrollView>
     </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    padding: 50,
-    paddingHorizontal: 16,
-    flex: 1,
-  },
-  showContainer: {
-    flex: 5,
-    margin: 10,
-    flexDirection: "column",
-  },
-  button: {
-    color: "#2EB6C7",
-  },
-  image: {
-    flexDirection: "row",
-    justifyContent: "center",
-    width: "100%",
-    height: 300,
-    marginBottom: 20,
-  },
-  addNew: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 10,
-  },
-  addNewButton: {
-    backgroundColor: "#2EB6C7",
-    padding: 10,
-    borderRadius: 10,
-    color: "#fff",
-  },
-});
+const styles = StyleSheet.create({});
