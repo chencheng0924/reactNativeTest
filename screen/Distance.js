@@ -8,9 +8,7 @@ import {
 } from "react-native";
 import Card from "../components/Card";
 import List from "../components/list";
-import { useState } from "react";
-import { LineChart } from "react-native-gifted-charts";
-import { PieChart } from "react-native-gifted-charts";
+import { LineChart, BarChart, PieChart } from "react-native-gifted-charts";
 let dataList = [
   {
     title: "公車",
@@ -50,16 +48,33 @@ const Distance = () => {
     { value: 0.6, label: "week3", showXAxisIndex: true },
     { value: 0.75, label: "week4", showXAxisIndex: true },
   ];
+  const lineData3 = [
+    { value: 10, frontColor: "#1FC97B" },
+    { value: 20, frontColor: "#1FC97B" },
+    { value: 30, frontColor: "#1FC97B" },
+    { value: 50, frontColor: "#1FC97B" },
+    { value: 40, frontColor: "#1FC97B" },
+    { value: 50, frontColor: "#1FC97B" },
+    { value: 70, frontColor: "#1FC97B" },
+    { value: 30, frontColor: "#1FC97B" },
+    { value: 30, frontColor: "#1FC97B" },
+    { value: 30, frontColor: "#1FC97B" },
+    { value: 20, frontColor: "#1FC97B" },
+    { value: 40, frontColor: "#1FC97B" },
+    { value: 50, frontColor: "#1FC97B" },
+    { value: 10, frontColor: "#1FC97B" },
+  ];
   const pieData = [
     {
       value: 25,
-      color: "#E8F6FF",
+      color: "#5DC1FF",
       showColor: "#5DC1FF",
       opacity: "#E8F6FF",
       text: "25%",
-      status: false,
+      status: true,
       title: "公車",
       img: require("../assets/img-bus.png"),
+      focused: true,
     },
     {
       value: 26,
@@ -93,16 +108,16 @@ const Distance = () => {
     },
   ];
   const selected = {
-    img: null,
-    title: "",
+    img: require("../assets/img-bus.png"),
+    title: "公車",
     weight: "",
-    text: null
-  }
+    text: "25%",
+  };
   // const [selected, setSelected] = useState({
   //   img: null,
   //   title: "",
   //   weight: "",
-  //   text: null
+  //   text: null,
   // });
   const testPress = (item, index) => {
     pieData.forEach((item2, index2) => {
@@ -120,8 +135,8 @@ const Distance = () => {
           //   img: null,
           //   title: "",
           //   weight: "",
-          //   text: null
-          // })
+          //   text: null,
+          // });
         } else {
           item2.status = !item2.status;
           item2.color = item2.showColor;
@@ -131,8 +146,8 @@ const Distance = () => {
           // setSelected({
           //   img: item.img,
           //   title: item.title,
-          //   text: item.text
-          // })
+          //   text: item.text,
+          // });
         }
       }
     });
@@ -149,15 +164,28 @@ const Distance = () => {
             <Text style={styles.sectionTime}>2022-08-01至2022-08-31</Text>
           </View>
           <View style={styles.lineContainer}>
-            <View style={styles.line} />
+            <View
+              style={{
+                height: 1,
+                width: 20,
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "#E7E7E7",
+                borderStyle: "dashed",
+                marginRight: 5,
+              }}
+            />
+            {/* <DashedLine dashLength={5} /> */}
             <Text>大眾平均</Text>
           </View>
         </View>
-        <View>
-          <LineChart
+        <View style={{ justifyContent: "center" }}>
+          {/* <LineChart
+            strokeDashArray2={[5, 6]}
             width={Dimensions.get("window").width - 120}
             height={150}
-            spacing={Dimensions.get("window").width < 380 ? 70 : 80}
+            // spacing={Dimensions.get("window").width < 380 ? 70 : 80}
+            spacing={(Dimensions.get("window").width - 85) / lineData.length}
             // 隱藏背後虛線
             hideRules
             // 隱藏Y軸文字
@@ -176,13 +204,36 @@ const Distance = () => {
             xAxisColor="#1FC97B"
             yAxisColor="#fff"
             maxValue={1}
-            thickness={3}
+            thickness={2}
             xAxisIndicesHeight={5}
             xAxisIndicesWidth={5}
             xAxisIndicesColor="#1FC97B"
             xAxisLabelTextStyle={{
               color: "#333",
             }}
+          /> */}
+          <BarChart
+            data={lineData3}
+            barWidth={10}
+            // barBorderRadius={10}
+            barBorderTopLeftRadius={20}
+            barBorderTopRightRadius={20}
+            frontColor="white"
+            hideRules
+            spacing={10}
+            yAxisThickness={0}
+            xAxisColor={"lightgray"}
+            // xAxisThickness={0}
+            yAxisLabelTexts={[]}
+            showReferenceLine1
+            referenceLine1Position={420}
+            hideYAxisText
+            // yAxisTextStyle={{ color: "white" }}
+            // referenceLine1Config={{
+            //   color: "gray",
+            //   dashWidth: 2,
+            //   dashGap: 3,
+            // }}
           />
         </View>
       </Card>
@@ -191,7 +242,10 @@ const Distance = () => {
           <View>
             <View style={styles.sectionText}>
               <Text style={styles.sectionSubtitle}>累積減碳排放量</Text>
-              <Text style={styles.sectionHeightTitle}><Text style={{fontSize: 28, fontWeight: 'bold'}}>125</Text> kg CO2</Text>
+              <Text style={styles.sectionHeightTitle}>
+                <Text style={{ fontSize: 28, fontWeight: "bold" }}>125</Text> kg
+                CO2
+              </Text>
             </View>
             <Text style={styles.sectionTime}>2022-08-01至2022-08-31</Text>
           </View>
@@ -211,26 +265,26 @@ const Distance = () => {
         <View style={styles.chart2}>
           <PieChart
             donut
-            radius={100}
-            textSize={12}
+            // showText
+            textSize={16}
             onPress={testPress}
             data={pieData}
             focusOnPress
-            // centerLabelComponent={() => {
-            //   return (
-            //     <View style={{ flexDirection: "row", alignItems: "center" }}>
-            //       <Image source={selected.img} />
-            //       <View style={{ marginLeft: 2 }}>
-            //         <Text style={{ fontSize: 12 }}>{selected.title}</Text>
-            //         <Text style={{ fontSize: 12, color: "#919191" }}>
-            //           {selected.text}
-            //         </Text>
-            //       </View>
-            //     </View>
-            //   );
-            // }}
+            centerLabelComponent={() => {
+              return (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Image source={selected.img} />
+                  <View style={{ marginLeft: 2 }}>
+                    <Text style={{ fontSize: 12 }}>{selected.title}</Text>
+                    <Text style={{ fontSize: 12, color: "#919191" }}>
+                      {selected.text}
+                    </Text>
+                  </View>
+                </View>
+              );
+            }}
           />
-          <View style={{ flexDirection: "row", alignItem: "center" }}>
+          {/* <View style={{ flexDirection: "row", alignItem: "center" }}>
             <Image source={selected.img} />
             <View style={{ marginLeft: 2 }}>
               <Text style={{ fontSize: 12 }}>{selected.title}</Text>
@@ -238,7 +292,7 @@ const Distance = () => {
                 {selected.text}
               </Text>
             </View>
-          </View>
+          </View> */}
         </View>
         <List list={dataList} />
       </Card>
@@ -276,11 +330,11 @@ const styles = StyleSheet.create({
   },
   sectionTime: {
     fontSize: 12,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   sectionSubtitle: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   sectionHeightTitle: {
     color: "#1FC97B",
@@ -310,12 +364,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 3,
   },
-  line: {
-    width: 20,
-    height: 5,
-    backgroundColor: "#e0e0e0",
-    marginRight: 5,
-  },
   card: {
     flex: 1,
     justifyContent: "center",
@@ -327,18 +375,18 @@ const styles = StyleSheet.create({
   card3Title: {
     alignSelf: "flex-start",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 20,
   },
   card3Subitle: {
     color: "#6443FF",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginVertical: 10,
   },
   card3Text: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   arrowImg: {
     width: 16,

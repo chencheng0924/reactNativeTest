@@ -1,30 +1,29 @@
 import { View, StyleSheet, Text, Dimensions, Image } from "react-native";
-import Carousel from "react-native-snap-carousel";
-let carouselItems = {
-  activeSlide: 0,
-  entries: [
-    {
-      title: "一卡通MONEY",
-      subtitle: "**4345 65421",
-      uri: require("../assets/qrcode.png"),
-    },
-    {
-      title: "一卡通MONEY",
-      subtitle: "**4345 65421",
-      uri: require("../assets/qrcode.png"),
-    },
-    {
-      title: "一卡通MONEY",
-      subtitle: "**4345 65421",
-      uri: require("../assets/qrcode.png"),
-    },
-  ],
-};
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import { useState, useRef } from "react";
+import { style } from "deprecated-react-native-prop-types/DeprecatedViewPropTypes";
+const carouselItems = [
+  {
+    title: "一卡通MONEY",
+    subtitle: "**4345 65421",
+    uri: require("../assets/qrcode.png"),
+  },
+  {
+    title: "一卡通MONEY",
+    subtitle: "**4345 65421",
+    uri: require("../assets/qrcode.png"),
+  },
+  {
+    title: "一卡通MONEY",
+    subtitle: "**4345 65421",
+    uri: require("../assets/qrcode.png"),
+  },
+];
 const renderItem = ({ item }) => {
   return (
     <View style={styles.item}>
       <View style={styles.subtitle}>
-        <Text>{item.title}</Text>
+        <Text style={styles.title}>{item.title}</Text>
         <Image source={require("../assets/icon_arrowright.png")} />
         <Text style={styles.text}>{item.subtitle}</Text>
       </View>
@@ -39,19 +38,39 @@ const renderItem = ({ item }) => {
 };
 const width = Dimensions.get("window").width;
 const CarouselList = () => {
+  const [slideIndex, setSlideIndex] = useState(0);
+  const isCarousel = useRef(null);
   return (
     <View style={styles.container}>
       <Carousel
+        ref={isCarousel}
         sliderWidth={width}
         sliderHeight={width / 2}
         itemWidth={width - 100}
-        data={carouselItems.entries}
+        data={carouselItems}
         scrollAnimationDuration={1000}
         renderItem={renderItem}
         onSnapToItem={(index) => {
-          carouselItems.activeSlide = index;
+          setSlideIndex(index);
         }}
       />
+      <Pagination
+        dotsLength={carouselItems.length}
+        activeDotIndex={slideIndex}
+        containerStyle={{ backgroundColor: "#E7E7E7", paddingVertical: 0 }}
+        dotStyle={{
+          width: 5,
+          height: 5,
+          borderRadius: 3,
+          backgroundColor: "#1FC97B",
+        }}
+        inactiveDotStyle={{
+          backgroundColor: "#C6C6C6",
+        }}
+        inactiveDotOpacity={0.9}
+        inactiveDotScale={0.8}
+      />
+      {/* {pagination()} */}
     </View>
   );
 };
@@ -72,7 +91,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     backgroundColor: "#fff",
-    elevation: 4,
+    elevation: 2,
     shadowColor: "black",
     shadowOffset: { width: 1, height: 2 },
     shadowRadius: 6,
@@ -88,10 +107,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    fontWeight: "bold",
+  },
+  title: {
+    fontWeight: "600",
+    fontSize: 12,
   },
   text: {
-    fontWeight: '300',
+    fontWeight: "300",
     fontSize: 14,
     position: "absolute",
     left: "35%",
@@ -107,12 +129,12 @@ const styles = StyleSheet.create({
   },
   refreshAreaText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
     marginHorizontal: 5,
   },
   refreshAreaText2: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: "700",
     color: "#1FC97B",
   },
 });
