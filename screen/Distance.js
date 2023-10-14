@@ -8,32 +8,27 @@ import {
 } from "react-native";
 import Card from "../components/Card";
 import List from "../components/list";
+import List2 from "../components/list2";
 import { LineChart, BarChart, PieChart } from "react-native-gifted-charts";
 let dataList = [
   {
     title: "公車",
     weight: "25kg",
     type: "bus",
-    uri: require("../assets/icon-bus.png"),
+    uri: require("../assets/img-bus2.png"),
   },
   {
     title: "捷運",
     weight: "50kg",
     type: "mrt",
-    uri: require("../assets/icon-mrt.png"),
+    uri: require("../assets/img-mrt2.png"),
   },
   {
     title: "輕軌",
     weight: "22kg",
     type: "lightMrt",
-    uri: require("../assets/icon-lightMrt.png"),
-  },
-  {
-    title: "步行",
-    weight: "28kg",
-    type: "walk",
-    uri: require("../assets/icon-walk.png"),
-  },
+    uri: require("../assets/img-walk2.png"),
+  }
 ];
 const Distance = () => {
   const lineData = [
@@ -157,9 +152,9 @@ const Distance = () => {
       <Card style={styles.card}>
         <View style={styles.section}>
           <View>
-            <View style={styles.sectionText}>
+            <View style={styles.sectionText2}>
               <Text style={styles.sectionSubtitle}>累積里程</Text>
-              <Text style={styles.sectionHeightTitle}>34.8km</Text>
+              <Text style={styles.sectionHeightTitle2}>34.8km</Text>
             </View>
             <Text style={styles.sectionTime}>2022-08-01至2022-08-31</Text>
           </View>
@@ -170,13 +165,13 @@ const Distance = () => {
                 width: 20,
                 borderRadius: 5,
                 borderWidth: 1,
-                borderColor: "#E7E7E7",
-                borderStyle: "dashed",
+                borderColor: "#EFE6FF",
                 marginRight: 5,
+                alignSelf: "center",
               }}
             />
             {/* <DashedLine dashLength={5} /> */}
-            <Text>大眾平均</Text>
+            <Text style={{fontSize: 12}}>大眾平均</Text>
           </View>
         </View>
         <View style={{ justifyContent: "center" }}>
@@ -225,9 +220,16 @@ const Distance = () => {
             xAxisColor={"lightgray"}
             // xAxisThickness={0}
             yAxisLabelTexts={[]}
-            showReferenceLine1
-            referenceLine1Position={420}
             hideYAxisText
+            showLine
+            lineConfig={{
+              color: '#EEE5FF',
+              thickness: 1,
+              curved: true,
+              hideDataPoints: true,
+              shiftY: 10,
+              initialSpacing: -30,
+            }}
             // yAxisTextStyle={{ color: "white" }}
             // referenceLine1Config={{
             //   color: "gray",
@@ -241,7 +243,7 @@ const Distance = () => {
         <View style={styles.section}>
           <View>
             <View style={styles.sectionText}>
-              <Text style={styles.sectionSubtitle}>累積減碳排放量</Text>
+              <Text style={styles.sectionSubtitle}>我的減碳排放量</Text>
               <Text style={styles.sectionHeightTitle}>
                 <Text style={{ fontSize: 28, fontWeight: "bold" }}>125</Text> kg
                 CO2
@@ -255,15 +257,44 @@ const Distance = () => {
                 style={styles.arrowImg}
                 source={require("../assets/arrowUp.png")}
               />
-              <Text style={styles.section2Text}>+4.3%</Text>
+              <Text style={styles.section2Text}>+1.1%</Text>
             </View>
             <View>
-              <Text style={styles.section2Text2}>相比上月</Text>
+              <Text style={styles.section2Text2}>相比前一個月</Text>
             </View>
           </View>
         </View>
         <View style={styles.chart2}>
-          <PieChart
+          <View style={styles.barLine}>
+            <View style={styles.barLine1}/>
+            <View style={styles.barLine2}/>
+          </View>
+          <View style={styles.statusBar1}>
+            <View style={styles.statusBar1View}>
+              <Text style={styles.statusBar1Text}>0</Text>
+            </View>
+          </View>
+          <View style={styles.statusBar2}>
+            <View style={styles.statusBar2View}>
+              <Text style={styles.statusBar2Text}>25%</Text>
+            </View>
+          </View>
+          <View style={styles.statusBar3}>
+            <View style={styles.statusBar3View}>
+              <Text style={styles.statusBar3Text}>50%</Text>
+            </View>
+          </View>
+          <View style={styles.statusBar4}>
+            <View style={styles.statusBar4View}>
+              <Text style={styles.statusBar4Text}>75%</Text>
+            </View>
+          </View>
+          <View style={styles.statusBar5}>
+            <View style={styles.statusBar5View}>
+              <Text style={styles.statusBar5Text}>100%</Text>
+            </View>
+          </View>
+          {/* <PieChart
             donut
             // showText
             textSize={16}
@@ -283,18 +314,10 @@ const Distance = () => {
                 </View>
               );
             }}
-          />
-          {/* <View style={{ flexDirection: "row", alignItem: "center" }}>
-            <Image source={selected.img} />
-            <View style={{ marginLeft: 2 }}>
-              <Text style={{ fontSize: 12 }}>{selected.title}</Text>
-              <Text style={{ fontSize: 12, color: "#919191" }}>
-                {selected.text}
-              </Text>
-            </View>
-          </View> */}
+          /> */}
         </View>
-        <List list={dataList} />
+        {/* <List list={dataList} /> */}
+        <List2 list={dataList} />
       </Card>
       <Card>
         <View style={styles.card3}>
@@ -324,8 +347,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   sectionText: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
+    marginBottom: 5,
+  },
+  sectionText2: {
+    flexDirection: "column",
     marginBottom: 5,
   },
   sectionTime: {
@@ -338,13 +364,19 @@ const styles = StyleSheet.create({
   },
   sectionHeightTitle: {
     color: "#1FC97B",
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: "bold",
-    marginLeft: 10,
+    marginTop: 10,
+  },
+  sectionHeightTitle2: {
+    color: "#1FC97B",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 10
   },
   lineContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    height: 20,
   },
   lineContainer2: {
     flexDirection: "column",
@@ -352,11 +384,12 @@ const styles = StyleSheet.create({
   section2: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'flex-end'
   },
   section2Text: {
     color: "#1FC97B",
-    fontSize: 12,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "700",
     marginLeft: 5,
   },
   section2Text2: {
@@ -399,7 +432,135 @@ const styles = StyleSheet.create({
   chart2: {
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 20,
-    paddingLeft: 20,
+    // paddingTop: 20,
+    // paddingLeft: 20,
+    marginVertical: 50
   },
+  barLine: {
+    width: '100%',
+    height: 15,
+    backgroundColor: '#5DC1FF',
+    borderRadius: 10
+  },
+  barLine1: {
+    position: 'absolute',
+    top: 0,
+    left: '70%',
+    width: 30,
+    height: 15,
+    backgroundColor: '#EE6B6F'
+  },
+  barLine2: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 70,
+    height: 15,
+    backgroundColor: '#60D9BD',
+    borderTopEndRadius: 10,
+    borderBottomEndRadius: 10
+  },
+  statusBar1: {
+    position: 'absolute',
+    top: -25,
+    left: 0,
+    width: 1,
+    height: 60,
+    borderWidth: 0.5,
+    borderColor: '#E0E0E0',
+    borderStyle: 'dashed',
+    borderRadius: 1,
+  },
+  statusBar1View: {
+    position: 'absolute',
+    left: -3,
+    bottom: -25,
+    width: 30
+  },
+  statusBar1Text: {
+    color:'#919191'
+  },
+  statusBar2: {
+    position: 'absolute',
+    top: -25,
+    left: '25%',
+    width: 1,
+    height: 60,
+    borderWidth: 0.5,
+    borderColor: '#E0E0E0',
+    borderStyle: 'dashed',
+    borderRadius: 1,
+    zIndex: -1
+  },
+  statusBar2View: {
+    position: 'absolute',
+    left: -8,
+    bottom: -25,
+    width: 30
+  },
+  statusBar2Text: {
+    color:'#919191'
+  },
+  statusBar3: {
+    position: 'absolute',
+    top: -25,
+    left: '50%',
+    width: 1,
+    height: 60,
+    borderWidth: 0.5,
+    borderColor: '#E0E0E0',
+    borderStyle: 'dashed',
+    borderRadius: 1,
+    zIndex: -1
+  },
+  statusBar3View: {
+    position: 'absolute',
+    left: -8,
+    bottom: -25,
+    width: 30
+  },
+  statusBar3Text: {
+    color:'#919191'
+  },
+  statusBar4: {
+    position: 'absolute',
+    top: -25,
+    left: '75%',
+    width: 1,
+    height: 60,
+    borderWidth: 0.5,
+    borderColor: '#E0E0E0',
+    borderStyle: 'dashed',
+    borderRadius: 1,
+    zIndex: -1
+  },
+  statusBar4View: {
+    position: 'absolute',
+    left: -8,
+    bottom: -25,
+    width: 30
+  },
+  statusBar4Text: {
+    color:'#919191'
+  },
+  statusBar5: {
+    position: 'absolute',
+    top: -25,
+    left: '100%',
+    width: 1,
+    height: 60,
+    borderWidth: 0.5,
+    borderColor: '#E0E0E0',
+    borderStyle: 'dashed',
+    borderRadius: 1,
+  },
+  statusBar5View: {
+    position: 'absolute',
+    left: -20,
+    bottom: -25,
+    width: 35
+  },
+  statusBar5Text: {
+    color:'#919191'
+  }
 });
