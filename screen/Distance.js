@@ -435,7 +435,7 @@ const Distance = () => {
             <View style={{
             position: 'absolute',
             top: '40%',
-            left: '41.5%',
+            left: '40.5%',
             width: 60,
             height: 60,
             flexDirection: "column",
