@@ -9,7 +9,10 @@ import {
 import Card from "../components/Card";
 import List from "../components/list";
 import List2 from "../components/list2";
+import List3 from "../components/list3";
+import DashedLine from "../components/DashedLine";
 import { LineChart, BarChart, PieChart } from "react-native-gifted-charts";
+import { ProgressChart } from "react-native-chart-kit";
 let dataList = [
   {
     title: "公車",
@@ -30,6 +33,20 @@ let dataList = [
     uri: require("../assets/img-walk2.png"),
   }
 ];
+let dataList4 = [
+  {
+    name: "Meng-Tien",
+    weight: "178kg",
+    present: "58",
+    uri: require("../assets/Robot2.png"),
+  },
+  {
+    name: "Hsin-Yi",
+    weight: "125kg",
+    present: "42",
+    uri: require("../assets/Robot1.png"),
+  }
+];
 const Distance = () => {
   const lineData = [
     { value: 1.0, label: "week1", showXAxisIndex: true },
@@ -44,20 +61,23 @@ const Distance = () => {
     { value: 0.75, label: "week4", showXAxisIndex: true },
   ];
   const lineData3 = [
-    { value: 10, frontColor: "#1FC97B" },
-    { value: 20, frontColor: "#1FC97B" },
-    { value: 30, frontColor: "#1FC97B" },
-    { value: 50, frontColor: "#1FC97B" },
-    { value: 40, frontColor: "#1FC97B" },
-    { value: 50, frontColor: "#1FC97B" },
-    { value: 70, frontColor: "#1FC97B" },
-    { value: 30, frontColor: "#1FC97B" },
-    { value: 30, frontColor: "#1FC97B" },
-    { value: 30, frontColor: "#1FC97B" },
-    { value: 20, frontColor: "#1FC97B" },
-    { value: 40, frontColor: "#1FC97B" },
-    { value: 50, frontColor: "#1FC97B" },
-    { value: 10, frontColor: "#1FC97B" },
+    { value: 10 },
+    { value: 20},
+    { value: 30},
+    { value: 50},
+    { value: 40},
+    { value: 50},
+    { value: 70, frontColor: "#6443FF", label: '8/18', labelComponent: () => (
+      <Text style={{textAlign: "center",fontSize: 12,padding: 5,width: 40, height: 25, backgroundColor: '#333', color: 'white', marginLeft: -8, marginBottom: -5, borderRadius: 10}}>8/18</Text>
+    ),},
+    { value: 30},
+    { value: 30},
+    { value: 30},
+    { value: 20},
+    { value: 40},
+    { value: 50},
+    { value: 10},
+    { value: 10},
   ];
   const pieData = [
     {
@@ -147,6 +167,19 @@ const Distance = () => {
       }
     });
   };
+  const dataList3 = {
+    data: [0.3, 0.5, 0.7, 0.9],
+    colors: [
+      "rgba(238, 107, 111, 1)",
+      "rgba(255, 173, 77, 1) ",
+      "rgba(93, 193, 255, 1) ",
+      "rgba(31, 201, 123, 1)",
+    ],
+  };
+  const changeText = (text, index) => {
+    console.log('text', text);
+    console.log('index', index);
+  }
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
@@ -154,11 +187,11 @@ const Distance = () => {
           <View>
             <View style={styles.sectionText2}>
               <Text style={styles.sectionSubtitle}>累積里程</Text>
-              <Text style={styles.sectionHeightTitle2}>34.8km</Text>
+              <Text style={styles.sectionHeightTitle2}>54.2km</Text>
             </View>
             <Text style={styles.sectionTime}>2022-08-01至2022-08-31</Text>
           </View>
-          <View style={styles.lineContainer}>
+          <View style={styles.lineContainer3}>
             <View
               style={{
                 height: 1,
@@ -209,17 +242,17 @@ const Distance = () => {
           /> */}
           <BarChart
             data={lineData3}
+            width={Dimensions.get("window").width - 120}
             barWidth={10}
-            // barBorderRadius={10}
             barBorderTopLeftRadius={20}
             barBorderTopRightRadius={20}
-            frontColor="white"
             hideRules
-            spacing={10}
+            spacing={15}
             yAxisThickness={0}
             xAxisColor={"lightgray"}
+            frontColor={'#1FC97B'}
             // xAxisThickness={0}
-            yAxisLabelTexts={[]}
+            // yAxisLabelTexts={[]}
             hideYAxisText
             showLine
             lineConfig={{
@@ -227,15 +260,24 @@ const Distance = () => {
               thickness: 1,
               curved: true,
               hideDataPoints: true,
-              shiftY: 10,
-              initialSpacing: -30,
+              shiftY: -15,
+              initialSpacing: 15,
             }}
-            // yAxisTextStyle={{ color: "white" }}
-            // referenceLine1Config={{
-            //   color: "gray",
-            //   dashWidth: 2,
-            //   dashGap: 3,
-            // }}
+            labelComponent
+            xAxisLabelTextStyle={{
+              color: 'black',
+              backgroundColor: (item, index) => {
+                console.log(index)
+                return '#333'
+              },
+              borderRadius: 10,
+              fontSize: 8,
+              padding: 4,
+            }}
+            // labelWidth={10}
+            withCustomBarColorFromData={true}
+            flatColor={true}
+            onPress={changeText}
           />
         </View>
       </Card>
@@ -245,7 +287,7 @@ const Distance = () => {
             <View style={styles.sectionText}>
               <Text style={styles.sectionSubtitle}>我的減碳排放量</Text>
               <Text style={styles.sectionHeightTitle}>
-                <Text style={{ fontSize: 28, fontWeight: "bold" }}>125</Text> kg
+                <Text style={{ fontSize: 24, fontWeight: "bold" }}>125</Text> kg
                 CO2
               </Text>
             </View>
@@ -270,26 +312,31 @@ const Distance = () => {
             <View style={styles.barLine2}/>
           </View>
           <View style={styles.statusBar1}>
+            <DashedLine backgroundColor='#E0E0E0' len={6} width={60}></DashedLine>
             <View style={styles.statusBar1View}>
               <Text style={styles.statusBar1Text}>0</Text>
             </View>
           </View>
           <View style={styles.statusBar2}>
+            <DashedLine backgroundColor='#E0E0E0' len={6} width={60}></DashedLine>
             <View style={styles.statusBar2View}>
               <Text style={styles.statusBar2Text}>25%</Text>
             </View>
           </View>
           <View style={styles.statusBar3}>
+            <DashedLine backgroundColor='#E0E0E0' len={6} width={60}></DashedLine>
             <View style={styles.statusBar3View}>
               <Text style={styles.statusBar3Text}>50%</Text>
             </View>
           </View>
           <View style={styles.statusBar4}>
+            <DashedLine backgroundColor='#E0E0E0' len={6} width={60}></DashedLine>
             <View style={styles.statusBar4View}>
               <Text style={styles.statusBar4Text}>75%</Text>
             </View>
           </View>
           <View style={styles.statusBar5}>
+            <DashedLine backgroundColor='#E0E0E0' len={6} width={60}></DashedLine>
             <View style={styles.statusBar5View}>
               <Text style={styles.statusBar5Text}>100%</Text>
             </View>
@@ -321,6 +368,100 @@ const Distance = () => {
       </Card>
       <Card>
         <View style={styles.card3}>
+          <View style={styles.section}>
+          <View>
+            <View style={styles.sectionText2}>
+              <Text style={styles.sectionSubtitle}>累積里程</Text>
+              <Text style={styles.sectionHeightTitle}>
+                <Text style={{ fontSize: 24, fontWeight: "bold" }}>303</Text> kg
+                CO2
+              </Text>
+            </View>
+            <Text style={styles.sectionTime}>2022-08-01至2022-08-31</Text>
+          </View>
+          <View style={styles.lineContainer}>
+            <View style={styles.lineItem}>
+              <View
+                style={{
+                  height: 4,
+                  width: 15,
+                  borderRadius: 5,
+                  backgroundColor: '#E0E0E0',
+                  marginRight: 8,
+                  alignSelf: "center",
+                }}
+              />
+              {/* <DashedLine dashLength={5} /> */}
+              <Text style={{fontSize: 12}}>台灣碳排平均</Text>
+            </View>
+            <View style={styles.lineItem}>
+              <View
+                style={{
+                  height: 4,
+                  width: 15,
+                  borderRadius: 5,
+                  backgroundColor: "#1FC97B",
+                  marginRight: 8,
+                  alignSelf: "center",
+                }}
+              />
+              {/* <DashedLine dashLength={5} /> */}
+              <Text style={{fontSize: 12}}>家庭碳排平均</Text>
+            </View>
+          </View>
+          </View>
+          <View style={styles.card3Area}>
+            <ProgressChart
+              data={dataList3}
+              width={Dimensions.get("window").width - 120}
+              height={220}
+              strokeWidth={10}
+              radius={44}
+              chartConfig={{
+                backgroundColor: "#fff",
+                backgroundGradientFrom: "#fff",
+                backgroundGradientTo: "#fff",
+                color: (opacity = 1) => `rgba(232, 232, 233, 0.5)`,
+                // color: (opacity = 0, index) => {
+                //   return index ? `${dataList3.colors[index]}${opacity})` : `rgba(238, 107, 111, ${opacity})`
+                // },
+                // `${dataList3.colors[index]}${opacity})`
+                // color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                // labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              }}
+              hideLegend={true}
+              withCustomBarColorFromData
+            />
+            <View style={{
+            position: 'absolute',
+            top: '40%',
+            left: '41.5%',
+            width: 60,
+            height: 60,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            // backgroundColor: '#333'
+          }}>
+            <Text style={{
+              fontSize: 24,
+              fontWeight: 'bold',
+            }}>94<Text style={{
+              fontSize: 12,
+            }}>%</Text></Text>
+            <Text style={{
+              fontSize: 8
+            }}>月目標已完成</Text>
+            </View>
+          </View>
+          <View style={styles.remindText}>
+            <Text style={styles.remindInText}>🌳 還差125kg CO2即可達標 🌳</Text>
+          </View>
+          <List3 list={dataList4} />
+        </View>
+      </Card>
+      <Card>
+        <View style={styles.card4}>
           <Text style={styles.card3Title}>減碳等級</Text>
           <Image
             style={styles.img}
@@ -364,7 +505,7 @@ const styles = StyleSheet.create({
   },
   sectionHeightTitle: {
     color: "#1FC97B",
-    fontSize: 24,
+    fontSize: 14,
     fontWeight: "bold",
     marginTop: 10,
   },
@@ -374,9 +515,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10
   },
-  lineContainer: {
+  lineContainer3: {
     flexDirection: "row",
-    height: 20,
+    height: 20
+  },
+  lineContainer: {
+    flexDirection: "column",
+  },
+  lineItem: {
+    flexDirection: 'row',
+    marginBottom: 5
   },
   lineContainer2: {
     flexDirection: "column",
@@ -402,6 +550,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card3: {
+    flexDirection: "column",
+    // alignItems: "center",
+  },
+  card4: {
     flexDirection: "column",
     alignItems: "center",
   },
@@ -434,7 +586,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // paddingTop: 20,
     // paddingLeft: 20,
-    marginVertical: 50
+    height: 100,
+    marginBottom: 30
+
   },
   barLine: {
     width: '100%',
@@ -462,34 +616,26 @@ const styles = StyleSheet.create({
   },
   statusBar1: {
     position: 'absolute',
-    top: -25,
+    top: 20,
     left: 0,
     width: 1,
     height: 60,
-    borderWidth: 0.5,
-    borderColor: '#E0E0E0',
-    borderStyle: 'dashed',
-    borderRadius: 1,
   },
   statusBar1View: {
     position: 'absolute',
     left: -3,
     bottom: -25,
-    width: 30
+    width: 30,
   },
   statusBar1Text: {
     color:'#919191'
   },
   statusBar2: {
     position: 'absolute',
-    top: -25,
+    top: 20,
     left: '25%',
     width: 1,
     height: 60,
-    borderWidth: 0.5,
-    borderColor: '#E0E0E0',
-    borderStyle: 'dashed',
-    borderRadius: 1,
     zIndex: -1
   },
   statusBar2View: {
@@ -503,14 +649,10 @@ const styles = StyleSheet.create({
   },
   statusBar3: {
     position: 'absolute',
-    top: -25,
+    top: 20,
     left: '50%',
     width: 1,
     height: 60,
-    borderWidth: 0.5,
-    borderColor: '#E0E0E0',
-    borderStyle: 'dashed',
-    borderRadius: 1,
     zIndex: -1
   },
   statusBar3View: {
@@ -524,14 +666,10 @@ const styles = StyleSheet.create({
   },
   statusBar4: {
     position: 'absolute',
-    top: -25,
+    top: 20,
     left: '75%',
     width: 1,
     height: 60,
-    borderWidth: 0.5,
-    borderColor: '#E0E0E0',
-    borderStyle: 'dashed',
-    borderRadius: 1,
     zIndex: -1
   },
   statusBar4View: {
@@ -545,14 +683,10 @@ const styles = StyleSheet.create({
   },
   statusBar5: {
     position: 'absolute',
-    top: -25,
+    top: 20,
     left: '100%',
     width: 1,
     height: 60,
-    borderWidth: 0.5,
-    borderColor: '#E0E0E0',
-    borderStyle: 'dashed',
-    borderRadius: 1,
   },
   statusBar5View: {
     position: 'absolute',
@@ -560,7 +694,25 @@ const styles = StyleSheet.create({
     bottom: -25,
     width: 35
   },
+  card3Area: {
+    paddingVertical: 10,
+    flexDirection:'row',
+    justifyContent: "center",
+  },
   statusBar5Text: {
     color:'#919191'
+  },
+  remindText: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  remindInText: {
+    color: '#919191',
+    backgroundColor: '#F7F7F8',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginBottom: 10
   }
 });

@@ -33,7 +33,6 @@ const MyTabBar = ({ navigation, state, descriptors }) => {
         };
         const isFocused = state.index === index;
         const { route, options } = descriptors[item.key];
-        console.log(options);
         return (
           <TouchableOpacity
             onPress={onPress}
@@ -59,7 +58,7 @@ export default function App() {
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          height: 1420,
+          height: 1800,
           paddingTop: 30,
           backgroundColor: "#E7E7E7",
         }}
